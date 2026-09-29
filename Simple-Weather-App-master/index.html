@@ -156,7 +156,35 @@
 
   </div>
 
+  <!-- ═══ Chatbot Widget ═══ -->
+  <!-- Floating toggle button -->
+  <button class="chatbot-fab" id="chatbotFab" aria-label="Open weather assistant">
+    <span class="fab-icon" id="fabIcon">💬</span>
+    <span class="fab-pulse"></span>
+  </button>
+
+  <!-- Chat panel -->
+  <div class="chatbot-panel" id="chatbotPanel">
+    <div class="chatbot-header">
+      <div class="chatbot-avatar">🤖</div>
+      <div class="chatbot-header-info">
+        <span class="chatbot-name">WeatherBot</span>
+        <span class="chatbot-status"><span class="status-dot"></span> Online</span>
+      </div>
+      <button class="chatbot-close" id="chatbotClose" aria-label="Close chat">✕</button>
+    </div>
+    <div class="chatbot-messages" id="chatbotMessages"></div>
+    <div class="chatbot-chips" id="chatbotChips"></div>
+    <div class="chatbot-input-bar">
+      <input type="text" id="chatbotInput" placeholder="Ask me anything about weather..." aria-label="Chat input" autocomplete="off" />
+      <button id="chatbotSend" class="chatbot-send-btn" aria-label="Send message">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m22 2-7 20-4-9-9-4z"/><path d="m22 2-10 10"/></svg>
+      </button>
+    </div>
+  </div>
+
   <script src="config.js"></script>
   <script src="main.js"></script>
+  <script src="chatbot.js"></script>
 </body>
 </html>
