@@ -6,13 +6,13 @@
    - Geocoding:       /geo/1.0/direct
    =============================================
 
-   ⚠️  REPLACE THE API KEY BELOW:
-   1. Go to https://openweathermap.org/api
-   2. Sign up for free → My API Keys
-   3. Paste your key below
+   API key is loaded from config.js (gitignored).
+   Copy config.example.js → config.js and add your key.
+   Get a free key at: https://openweathermap.org/api
    ============================================= */
 
-const API_KEY = '8240002d5bfe4d9e1151903fff380095'; // ← Replace this!
+// Read API key from config.js (window.ENV)
+const API_KEY = (window.ENV && window.ENV.OPENWEATHER_API_KEY) || '';
 
 const BASE_URL  = 'https://api.openweathermap.org/data/2.5';
 const GEO_URL   = 'https://api.openweathermap.org/geo/1.0';
@@ -40,7 +40,7 @@ const particles      = document.getElementById('particles');
 // ─── Init ────────────────────────────────────────
 window.addEventListener('DOMContentLoaded', () => {
   // Validate API key
-  if (!API_KEY || API_KEY === '8240002d5bfe4d9e1151903fff380095') {
+  if (!API_KEY || API_KEY === 'YOUR_API_KEY_HERE') {
     showApiNotice();
     showError('No API Key', 'Please add your OpenWeatherMap API key in main.js to load live weather data.');
     return;
