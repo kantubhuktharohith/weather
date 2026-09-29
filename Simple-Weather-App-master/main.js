@@ -40,7 +40,7 @@ const particles      = document.getElementById('particles');
 // ─── Init ────────────────────────────────────────
 window.addEventListener('DOMContentLoaded', () => {
   // Validate API key
-  if (!API_KEY || API_KEY === 'YOUR_API_KEY_HERE') {
+  if (!API_KEY || API_KEY === '8240002d5bfe4d9e1151903fff380095') {
     showApiNotice();
     showError('No API Key', 'Please add your OpenWeatherMap API key in main.js to load live weather data.');
     return;
