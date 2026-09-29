@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>WeatherNow – Real-Time Weather App</title>
+  <meta name="description" content="Get real-time weather data, 5-day forecasts, humidity, wind speed, and more for any city in the world." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="main.css" />
+</head>
+<body class="weather-default">
+
+  <!-- Animated background particles -->
+  <div class="bg-overlay" id="bgOverlay"></div>
+  <div class="particles" id="particles"></div>
+
+  <div class="app-container">
+
+    <!-- Header / Search -->
+    <header class="app-header">
+      <div class="brand">
+        <span class="brand-icon">🌤</span>
+        <span class="brand-name">WeatherNow</span>
+      </div>
+      <div class="search-wrapper">
+        <div class="search-bar" id="searchBar">
+          <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+          <input
+            id="searchInput"
+            type="text"
+            autocomplete="off"
+            placeholder="Search city..."
+            aria-label="Search for a city"
+          />
+          <button id="clearBtn" class="clear-btn" aria-label="Clear search" style="display:none">✕</button>
+        </div>
+        <button id="locationBtn" class="location-btn" aria-label="Use my location" title="Use my location">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        </button>
+      </div>
+
+      <!-- Search suggestions dropdown -->
+      <div class="suggestions" id="suggestions"></div>
+    </header>
+
+    <!-- Loading State -->
+    <div class="loading-screen" id="loadingScreen">
+      <div class="spinner"></div>
+      <p>Fetching weather data...</p>
+    </div>
+
+    <!-- Error State -->
+    <div class="error-screen" id="errorScreen" style="display:none">
+      <span class="error-icon">⚠️</span>
+      <h2 id="errorTitle">City not found</h2>
+      <p id="errorMessage">Please check the city name and try again.</p>
+      <button id="retryBtn" class="retry-btn">Try Again</button>
+    </div>
+
+    <!-- Main Weather Content -->
+    <main class="weather-content" id="weatherContent" style="display:none">
+
+      <!-- Hero Section: Current Weather -->
+      <section class="hero-section">
+        <div class="location-info">
+          <h1 class="city-name" id="cityName">—</h1>
+          <p class="country-date" id="countryDate">—</p>
+        </div>
+
+        <div class="weather-hero">
+          <div class="weather-icon-large" id="weatherIconLarge">🌤</div>
+          <div class="temp-main">
+            <span class="temp-value" id="tempValue">—</span>
+            <div class="temp-unit-toggle">
+              <button id="celsiusBtn" class="unit-btn active" aria-label="Switch to Celsius">°C</button>
+              <span class="unit-divider">|</span>
+              <button id="fahrenheitBtn" class="unit-btn" aria-label="Switch to Fahrenheit">°F</button>
+            </div>
+          </div>
+          <div class="weather-description" id="weatherDescription">—</div>
+          <div class="feels-like" id="feelsLike">Feels like —</div>
+        </div>
+
+        <div class="hi-low-bar">
+          <span class="hi-low-item">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="18 15 12 9 6 15"/></svg>
+            <span id="tempHigh">—</span>
+          </span>
+          <span class="hi-low-divider"></span>
+          <span class="hi-low-item low">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+            <span id="tempLow">—</span>
+          </span>
+        </div>
+      </section>
+
+      <!-- Stats Grid -->
+      <section class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-icon">💧</div>
+          <div class="stat-label">Humidity</div>
+          <div class="stat-value" id="statHumidityVal">—</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">💨</div>
+          <div class="stat-label">Wind Speed</div>
+          <div class="stat-value" id="statWindVal">—</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">👁</div>
+          <div class="stat-label">Visibility</div>
+          <div class="stat-value" id="statVisibilityVal">—</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">🌡</div>
+          <div class="stat-label">Pressure</div>
+          <div class="stat-value" id="statPressureVal">—</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">🌅</div>
+          <div class="stat-label">Sunrise</div>
+          <div class="stat-value" id="statSunriseVal">—</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">🌇</div>
+          <div class="stat-label">Sunset</div>
+          <div class="stat-value" id="statSunsetVal">—</div>
+        </div>
+      </section>
+
+      <!-- 5-Day Forecast -->
+      <section class="forecast-section">
+        <h2 class="section-title">5-Day Forecast</h2>
+        <div class="forecast-strip" id="forecastStrip"></div>
+      </section>
+
+      <!-- Hourly Forecast -->
+      <section class="hourly-section">
+        <h2 class="section-title">Today's Hourly</h2>
+        <div class="hourly-strip" id="hourlyStrip"></div>
+      </section>
+
+    </main>
+
+    <!-- API Key Notice -->
+    <div class="api-notice" id="apiNotice" style="display:none">
+      <p>⚙️ Add your <strong>OpenWeatherMap API key</strong> in <code>main.js</code> to enable live data.</p>
+      <a href="https://openweathermap.org/api" target="_blank" rel="noopener">Get a free key →</a>
+    </div>
+
+    <footer class="app-footer">
+      <p>Powered by <a href="https://openweathermap.org" target="_blank" rel="noopener">OpenWeatherMap</a> · WeatherNow</p>
+    </footer>
+
+  </div>
+
+  <script src="main.js"></script>
+</body>
+</html>
